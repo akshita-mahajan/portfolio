@@ -1,122 +1,100 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import SmokeCanvas from './components/SmokeCanvas'
+import HeroParticles from './components/HeroParticles'
+import FireTracedTitle from './components/FireTracedTitle'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [isSettled, setIsSettled] = useState<boolean>(false)
+  const [replayKey, setReplayKey] = useState<number>(0)
+
+  const [isReducedMotion] = useState(() => {
+    if (typeof window === 'undefined') return false
+    const params = new URLSearchParams(window.location.search)
+    return params.get('reduced-motion') === 'true'
+  })
+
+  const [isTestFirstA] = useState(() => {
+    if (typeof window === 'undefined') return false
+    const params = new URLSearchParams(window.location.search)
+    return params.get('test-first-a') === 'true'
+  })
+
+  const handleHomeClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setIsSettled(false)
+    setReplayKey(k => k + 1)
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div
+      className={`cinematic-experience ${isSettled ? 'stage-settled' : 'stage-tracing'}`}
+      data-force-motion={!isReducedMotion ? 'true' : 'false'}
+    >
+      {/* Existing live WebGL fluid smoke canvas (100% Untouched) */}
+      <div className="cinematic-backdrop" aria-hidden="true">
+        <SmokeCanvas reducedMotion={isReducedMotion} />
+      </div>
 
-      <div className="ticks"></div>
+      {/* Atmospheric floating particles (100% Untouched) */}
+      <HeroParticles reducedMotion={isReducedMotion} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      {/* Top Navigation — Preserved */}
+      <header className="cinematic-nav" role="banner">
+        <div className="nav-container">
+          <a href="#" className="nav-home-link" onClick={handleHomeClick} aria-label="Home">
+            <span className="home-text">HOME</span>
+            <span className="home-indicator" />
+          </a>
+          <nav className="nav-links-right" aria-label="Main Navigation">
+            <a href="#about" className="nav-item">ABOUT</a>
+            <a href="#projects" className="nav-item">PROJECTS</a>
+            <a href="#contact" className="nav-item">CONTACT</a>
+          </nav>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </header>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      {/* Main Hero Stage */}
+      <main className="cinematic-main" role="main">
+        <section className="central-character-stage" aria-label="Hero Section">
+          <div className="hero-title-wrapper">
+            <div className="title-letter-container" key={replayKey}>
+              {/* Real Fire-Traced Formation Title Engine */}
+              <FireTracedTitle
+                testFirstAOnly={isTestFirstA}
+                reducedMotion={isReducedMotion}
+                onSettled={() => setIsSettled(true)}
+              />
+            </div>
+
+            {/* Tagline — Centered beneath MAHAJAN */}
+            {!isTestFirstA && (
+              <p className={`hero-sub-descriptor ${isSettled ? 'descriptor-visible' : ''}`}>
+                CSIT STUDENT
+                <span className="descriptor-separator">·</span>
+                FULL-STACK DEVELOPER
+                <span className="descriptor-separator">·</span>
+                PROJECT BUILDER
+              </p>
+            )}
+
+            {/* Understated CTA — Centered below tagline */}
+            {!isTestFirstA && (
+              <div className={`hero-explore-cta ${isSettled ? 'cta-visible' : ''}`}>
+                <a href="#projects" className="explore-link">
+                  <span>EXPLORE MY WORK</span>
+                  <span className="explore-arrow" aria-hidden="true">→</span>
+                </a>
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
+
+      <section id="about" className="sr-anchor" aria-hidden="true" />
+      <section id="projects" className="sr-anchor" aria-hidden="true" />
+      <section id="contact" className="sr-anchor" aria-hidden="true" />
+    </div>
   )
 }
-
-export default App

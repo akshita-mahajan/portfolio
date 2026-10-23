@@ -1,111 +1,197 @@
+/* ==========================================================================
+   CINEMATIC DESIGN SYSTEM — AKSHITA MAHAJAN PORTFOLIO
+   Milestone 01: Editorial Foundation & Atmospheric Hero Environment
+   ========================================================================== */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Color Palette — Cinematic Near-Black */
+  --bg-abyss: #07080a;
+  --bg-surface: #0e1014;
+  --bg-surface-elevated: #14171d;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Atmospheric Dual-Light System */
+  /* Cold Smoky Slate Blue (Left Atmosphere) */
+  --light-slate-base: #4a637d;
+  --light-slate-soft: rgba(74, 99, 125, 0.22);
+  --light-slate-glow: rgba(114, 164, 194, 0.15);
+  
+  /* Warm Amber & Burnt Orange (Right Illumination) */
+  --light-amber-core: #e58237;
+  --light-amber-glow: #ff9d42;
+  --light-burnt-orange: #b25422;
+  --light-amber-soft: rgba(229, 130, 55, 0.18);
+  --light-amber-subtle: rgba(229, 130, 55, 0.06);
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
+  /* Typography Colors */
+  --text-primary: #f4f5f8;
+  --text-secondary: #9aa2b1;
+  --text-tertiary: #5d6677;
+  --text-accent: #f89e52;
+
+  /* Hairlines & Borders */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-amber-glow: rgba(229, 130, 55, 0.35);
+
+  /* Typography Families */
+  --font-serif: 'Bodoni Moda', 'Cinzel', Georgia, serif;
+  --font-display: 'Bodoni Moda', 'Cinzel', serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+
+  /* Spacing & Transitions */
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 600ms var(--ease-cinematic);
+  --transition-normal: 300ms var(--ease-smooth);
+}
+
+/* Base Document Reset & Setup */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: var(--bg-abyss);
+  color: var(--text-primary);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
-  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  background-color: var(--bg-abyss);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  position: relative;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+#root {
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+/* Atmospheric Noise & Grain Layer */
+.cinematic-grain {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 99;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* Asymmetric Dual Lighting Atmosphere */
+.cinematic-atmosphere {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Left Smoky Slate-Blue Light Cone */
+.atmosphere-light-left {
+  position: absolute;
+  top: -15%;
+  left: -10%;
+  width: 70vw;
+  height: 85vh;
+  background: radial-gradient(
+    ellipse 60% 55% at 35% 35%,
+    rgba(74, 99, 125, 0.22) 0%,
+    rgba(32, 45, 60, 0.12) 40%,
+    transparent 75%
+  );
+  filter: blur(50px);
+  will-change: transform;
+}
+
+/* Right Warm Amber & Burnt Orange Light Cone */
+.atmosphere-light-right {
+  position: absolute;
+  top: 10%;
+  right: -15%;
+  width: 75vw;
+  height: 90vh;
+  background: radial-gradient(
+    ellipse 65% 55% at 65% 50%,
+    rgba(229, 130, 55, 0.18) 0%,
+    rgba(178, 84, 34, 0.09) 38%,
+    rgba(7, 8, 10, 0) 75%
+  );
+  filter: blur(60px);
+  will-change: transform;
+}
+
+/* Subtle Vignette Edge Mask */
+.atmosphere-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 90% 85% at 50% 50%,
+    transparent 45%,
+    rgba(7, 8, 10, 0.75) 100%
+  );
+  pointer-events: none;
+}
+
+/* Keyboard Focus Accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--light-amber-core);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Typography Selection */
+::selection {
+  background-color: rgba(229, 130, 55, 0.3);
+  color: var(--text-primary);
+}
+
+/* Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-force-motion='false'] *,
+  [data-force-motion='false'] *::before,
+  [data-force-motion='false'] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* Screen Reader Only Utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
